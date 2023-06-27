@@ -6,7 +6,6 @@ import { HomeStack } from './main/home';
 import { useAppContext } from '../context/AppContext';
 import "../utils/flow/config";
 
-import * as fcl from "@onflow/fcl/dist/fcl-react-native";
 import { SettingsStack } from './main/settings';
 
 const Stack = createStackNavigator();

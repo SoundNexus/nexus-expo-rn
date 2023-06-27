@@ -14,6 +14,9 @@ import {
 } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { useAppContext } from '../../context/AppContext';
+import "../../utils/flow/config";
+
+import * as fcl from "@onflow/fcl/dist/fcl-react-native";
 
 const { CKCameraManager } = NativeModules;
 
@@ -39,6 +42,20 @@ export const SettingsStack = () => {
         }
       >
         <Text className='text-white'> I'm at Settings</Text>
+        <TouchableHighlight
+            className="rounded-[8px] p-4 border border-[#DDE0ED] bg-white"
+            activeOpacity={1}
+            underlayColor={'#DDDDDD'}
+            onPress={fcl.unauthenticate}
+          >
+            <View className="flex flex-row items-center justify-center gap-4">
+              <Text
+                className="text-[16px] font-normal text-center text-[#1C2237]"
+              >
+                Logout
+              </Text>
+            </View>
+          </TouchableHighlight>
       </ScrollView>
       
     </SafeAreaView>
