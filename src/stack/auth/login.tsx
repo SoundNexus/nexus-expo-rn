@@ -32,7 +32,7 @@ export const LoginStack = () => {
   const setBloctoUser = (user: Partial<any>) => {
     try {
       if (user.loggedIn) {
-        console.log("🚀 ~ file: login.tsx:36 ~ setBloctoUser ~ user.loggedIn:", user.loggedIn)
+        console.log("🚀 ~ file: login.tsx:36 ~ setBloctoUser ~ user.loggedIn:", user)
         appDispatch({
           type: 'app.update',
           payload: {
@@ -52,7 +52,6 @@ export const LoginStack = () => {
         },
       });
     }
-    
   }
 
   return (

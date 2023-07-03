@@ -36,7 +36,6 @@ const reducer = (
 ) => {
   switch (payload.type) {
     case 'app.update':
-      console.log("🚀 ~ file: AppContext.tsx:36 ~ payload.type:", payload.type)
       if (payload.payload) {
         console.log("🚀 ~ file: AppContext.tsx:38 ~ payload.payload:", payload.payload)
         return update(state, {
