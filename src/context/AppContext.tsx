@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 import {PayloadAction} from './utils';
 
 export interface AppContextState {
-  currentStack: 'home' | 'scanner' | 'claim' | 'settings';
+  currentStack: 'home.main' | 'scanner' | 'claim' | 'profile.settings' | 'profile.main' | 'home.preview';
   user?: Partial<any>;
   loading?: boolean;
 }
@@ -18,12 +18,12 @@ export interface AppContextType {
       PayloadAction<Partial<AppContextState>, AppContextAction>
     >,
   ) => void;
-  currentStack: 'home' | 'scanner' | 'claim' | 'settings',
+  currentStack: 'home.main' | 'scanner' | 'claim' | 'profile.settings' | 'profile.main' | 'home.preview',
   isAuthorized: boolean;
 }
 
 const initialState: AppContextState = {
-  currentStack: 'home',
+  currentStack: 'home.main',
   user: undefined,
   loading: true,
 };
@@ -55,7 +55,7 @@ const reducer = (
 const AppContext = createContext<AppContextType>({
   value: initialState,
   dispatch: () => {},
-  currentStack: 'home',
+  currentStack: 'home.main',
   isAuthorized: false,
 });
 

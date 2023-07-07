@@ -12,10 +12,11 @@ import {
   NativeModules,
   RefreshControl,
   FlatList,
+  Pressable,
 } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { useAppContext } from '../../context/AppContext';
-import Clipboard from '@react-native-clipboard/clipboard';
+import { useNavigation } from '@react-navigation/native';
 
 const windowHeight = Dimensions.get('window').height;
 const statusBarHeight: number =
@@ -23,19 +24,23 @@ const statusBarHeight: number =
     ? StatusBar.currentHeight || 0
     : getStatusBarHeight(true);
 
-const musicData = [
-  { id: 0, eventName: 'Top of the World', creatorName: 'Se', coverImage: '../../assets/sample-cover.png', totalSupply: 100, minted: 57},
-  { id: 1, eventName: 'Shit of the World', creatorName: 'Se', coverImage: '../../assets/sample-cover.png', totalSupply: 500, minted: 157}
+const data = [
+  { id: 0, eventName: 'Top of the World', creatorName: 'Se', coverImage: '../../assets/sample-cover.png', price: '$100', totalSupply: 100, minted: 57, description: 'The Fighters. After Funny Bones began to disappear, the Agency of the Meaty Bones formed as a defense against all threats.'},
+  { id: 1, eventName: 'Shit of the World', creatorName: 'Se', coverImage: '../../assets/sample-cover.png', price: '$100', totalSupply: 500, minted: 157, description: 'The Fighters. After Funny Bones began to disappear, the Agency of the Meaty Bones formed as a defense against all threats.'}
 ]
 
 export const HomeStack = () => {
   const [loading, setLoading] = useState(false);
-  const { value: app } = useAppContext();
-  console.log("🚀 ~ file: home.tsx:29 ~ HomeStack ~ app:", app)
+  const { value: app, dispatch: appDispatch } = useAppContext();
+  const navigation = useNavigation();
 
-  const copyText = (value: string) => {
-    Clipboard.setString(value);
-  };
+  const onNavigate = (item: any) => {
+    appDispatch({
+      type: 'app.update',
+      payload: { currentStack: 'home.preview' },
+    });
+    navigation.navigate('home.preview', item)
+  }
 
   return (
     <SafeAreaView className="relative bg-white">
@@ -47,11 +52,11 @@ export const HomeStack = () => {
           />
         </View>
         <View className="flex flex-col items-left justify-center gap-3 ml-5 content-center">
-          <Text className="text-[#757E9D]" style={{ fontFamily: 'Rubik' }}>
-            {'email@email.com'}
+          <Text className="text-[#757E9D]" >
+            { app?.user?.services[0]?.scoped?.email }
           </Text>
           <TouchableHighlight
-            onPress={() => copyText(app?.user?.addr as string)}
+            // onPress={() => copyText(app?.user?.addr as string)}
             activeOpacity={1}
             underlayColor={'#DDDDDD'}
             className="rounded-[4px] bg-[#F4F6FB]"
@@ -68,11 +73,11 @@ export const HomeStack = () => {
       </View>
       <View className="bg-[#E5E4E2] h-full py-5 px-8 content-center">
         <FlatList 
-          data={musicData}
+          data={data}
           refreshing={loading}
           keyExtractor={(_, index) => index.toString()}
           renderItem={( item ) => (
-            <View>
+            <Pressable onPress={() => onNavigate(item) }>
               <View className='flex flex-row justify-between my-8'>
                 <Image source={require('../../assets/sample-cover.png')} className='max-w-[390px] max-h-[390px] h-auto justify-center mx-auto' />
               </View>
@@ -91,31 +96,10 @@ export const HomeStack = () => {
                   </Text>
                 </View>
               </View>
-            </View>
+            </Pressable>
           )}
         />
       </View>
-      {/* <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        className="bg-black h-full py-8 px-10 content-center"
-        refreshControl={
-          <RefreshControl
-            refreshing={loading}
-          />
-        }
-      >
-        <View className='flex flex-row justify-between my-8 bg-[#282828]'>
-          <Image source={require('../../assets/sample-cover.png')} className='max-w-[390px] max-h-[390px] h-auto justify-center mx-auto'></Image>
-        </View>
-        <View className='flex justify-center'>
-          <Text className=' text-2xl font-bold text-white text-center'>
-            {'Track Name'}
-          </Text>
-          <Text className=' text-lg font-bold text-white text-center'>
-            {'Artist Name'}
-          </Text>
-        </View>
-      </ScrollView> */}
     </SafeAreaView>
   );
 };
