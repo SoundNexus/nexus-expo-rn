@@ -9,6 +9,7 @@ import "../utils/flow/config";
 import { SettingsStack } from './main/settings';
 import { PreviewStack } from './main/preview';
 import { ProfileStack } from './main/profile';
+import { CameraStack } from './main/camera';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -66,6 +67,10 @@ export const MainStack = () => {
       <Tab.Screen 
         name='home'
         component={HomeNavigator}
+      />
+      <Tab.Screen 
+        name='scanner'
+        component={CameraStack}
       />
       <Tab.Screen 
         name='profile' 
