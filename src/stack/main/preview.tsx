@@ -24,12 +24,13 @@ const statusBarHeight: number =
     ? StatusBar.currentHeight || 0
     : getStatusBarHeight(true);
 
-const buttonWidth = windowWidth / 2 - 20;
+interface Props {
+  route: any;
+}
 
-export const PreviewStack = ({ route }) => {
+export const PreviewStack = ({ route }: Props) => {
   const [loading, setLoading] = useState(false);
-  const {item} = route.params;
-  console.log("🚀 ~ file: preview.tsx:32 ~ PreviewStack ~ item:", item)
+  const {item } = route.params;
   const navigation = useNavigation();
   const { value: app } = useAppContext();
   const { value: scan } = useScanContext();
@@ -39,6 +40,11 @@ export const PreviewStack = ({ route }) => {
   };
 
   const onBuyTicket = async () => {
+    setLoading(true);
+  };
+
+  const onGenerateQR = async () => {
+    console.log('Generating QR code')
     setLoading(true);
   };
 
@@ -66,7 +72,7 @@ export const PreviewStack = ({ route }) => {
         className="bg-white px-5 pt-4 pb-10 h-full"
       >
         <View className="pb-10">
-          <View className="overflow-hidden rounded-[24px] shadow border border-[#DDE0ED]">
+          <View className="overflow-hidden rounded-[24px] border border-[#DDE0ED]">
             <Image
               source={require('../../assets/sample-cover.png')}
               className='max-w-[390px] max-h-[390px] h-auto justify-center mx-auto'
@@ -99,34 +105,73 @@ export const PreviewStack = ({ route }) => {
           <Text className="text-[#757E9D] mb-6 text-sm">
             {item?.description}
           </Text>
+          <Text className="mb-2 tracking-[2px] text-[#1C2237] text-sm font-medium">
+            PRICE
+          </Text>
+          <Text className="text-[#757E9D] mb-6 text-sm">
+            {item?.price}
+          </Text>
+          <Text className="mb-2 tracking-[2px] text-[#1C2237] text-sm font-medium">
+            QUANTITY
+          </Text>
+          <Text className="text-[#757E9D] mb-6 text-sm">
+            {item?.minted + '/' + item?.totalSupply}
+          </Text>
         </View>
       </ScrollView>
 
-      <View className="h-[96px] shadow bg-white rounded-t-[16px] w-full relative flex flex-row justify-evenly items-center p-5">
-        <View className='flex mx-auto'>
-          <Text>Price</Text>
-          <Text>{item?.price}</Text>
-        </View>
-        <View className='flex mx-auto'>
-          <Text>Quantity</Text>
-          <Text>{item?.minted + '/' + item?.totalSupply}</Text>
-        </View>
-        <TouchableHighlight
-          className={cx('flex mx-auto rounded-[8px]', {
-            'bg-[#DFDFDF]': loading,
-          })}
-          onPress={() => onBuyTicket()}
-          activeOpacity={1}
-          disabled={loading}
-          underlayColor={'#eaeaea'}
-        >
-          <View className="rounded-[8px] overflow-hidden relative h-[56px] flex flex-row items-center justify-center">
-            <Text className="text-[16px] text-[#1c2237] mr-3">Buy Ticket</Text>
-            {loading && ( <ActivityIndicator /> )}
-          </View>
-        </TouchableHighlight>
+      <View className="h-[96px] bg-white rounded-t-[16px] w-full relative flex flex-row justify-evenly items-center p-5">
+        {app.currentStack === 'home.preview' ? (
+          <>
+            <TouchableHighlight
+              className={cx('flex mx-auto rounded-[8px]', {
+                'bg-[#DFDFDF]': loading,
+              })}
+              onPress={() => onBuyTicket()}
+              activeOpacity={1}
+              disabled={loading}
+              underlayColor={'#eaeaea'}
+            >
+              <View className="rounded-[8px] overflow-hidden relative h-[56px] flex flex-row items-center justify-center">
+                <Text className="text-[16px] text-[#1c2237] mr-3">Follow</Text>
+                {loading && ( <ActivityIndicator /> )}
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight
+              className={cx('flex mx-auto rounded-[8px]', {
+                'bg-[#DFDFDF]': loading,
+              })}
+              onPress={() => onBuyTicket()}
+              activeOpacity={1}
+              disabled={loading}
+              underlayColor={'#eaeaea'}
+            >
+              <View className="rounded-[8px] overflow-hidden relative h-[56px] flex flex-row items-center justify-center">
+                <Text className="text-[16px] text-[#1c2237] mr-3">Buy Ticket</Text>
+                {loading && ( <ActivityIndicator /> )}
+              </View>
+            </TouchableHighlight>
 
-        <View className="absolute bg-white w-full bottom-[-10px] h-[10px]"></View>
+            <View className="absolute bg-white w-full bottom-[-10px] h-[10px]"></View>
+          </>
+        ) : (
+          <>
+            <TouchableHighlight
+              className={cx('flex mx-auto rounded-[8px]', {
+                'bg-[#DFDFDF]': loading,
+              })}
+              onPress={() => onGenerateQR()}
+              activeOpacity={1}
+              disabled={loading}
+              underlayColor={'#eaeaea'}
+            >
+              <View className="rounded-[8px] overflow-hidden relative h-[56px] flex flex-row items-center justify-center">
+                <Text className="text-[16px] text-[#1c2237] mr-3">Generate QR</Text>
+                {loading && ( <ActivityIndicator /> )}
+              </View>
+            </TouchableHighlight>
+          </>
+        )}
       </View>
     </SafeAreaView>
   );

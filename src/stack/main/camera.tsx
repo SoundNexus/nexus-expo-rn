@@ -45,7 +45,7 @@ export const CameraStack = () => {
   const { dispatch: scanDispatch } = useScanContext();
 
   
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ type, data }: any) => {
     try {
       console.log("🚀 ~ file: camera.tsx:48 ~ handleBarCodeScanned ~ data:", data)
       console.log("🚀 ~ file: camera.tsx:48 ~ handleBarCodeScanned ~ type:", type)
@@ -67,18 +67,6 @@ export const CameraStack = () => {
   }
   return (
     <View className="flex-1 bg-black relative">
-      {/* <Camera
-        // Barcode props
-        style={StyleSheet.absoluteFill}
-        barCodeScannerSettings={{
-          barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
-        }}
-        onCameraReady={}
-        type={CameraType.front}
-        onBarCodeScanned={(event: any) =>
-          onReadCode(event.nativeEvent.codeStringValue)
-        } // optional // (default false) optional, show frame with transparent layer (qr code or barcode will be read on this area ONLY), start animation for scanner,that stoped when find any code. Frame always at center of the screen
-      /> */}
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         barCodeTypes={BarCodeScanner.Constants.BarCodeType.qr}

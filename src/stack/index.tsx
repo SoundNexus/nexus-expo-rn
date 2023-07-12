@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { LoginStack } from './auth/login';
 import { HomeStack } from './main/home';
@@ -10,6 +10,7 @@ import { SettingsStack } from './main/settings';
 import { PreviewStack } from './main/preview';
 import { ProfileStack } from './main/profile';
 import { CameraStack } from './main/camera';
+import { HeaderLogo } from '../components/header/header';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -17,12 +18,18 @@ const Tab = createBottomTabNavigator();
 const HomeNavigator = () => (
   <Stack.Navigator 
     initialRouteName='home.main'
-    screenOptions={{ headerShown: false }}
+    screenOptions={{ headerShown: true }}
   >
-    <Stack.Screen name="home.main">
+    <Stack.Screen 
+      name="home.main" 
+      options={{
+        header: () => <HeaderLogo />,
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}>
       {() => <HomeStack />}
     </Stack.Screen>
-    <Stack.Screen name="home.preview">
+    <Stack.Screen name="home.preview"
+    options={{headerShown: false}}>
       {(props) => <PreviewStack {...props} />}
     </Stack.Screen>
   </Stack.Navigator>
@@ -35,6 +42,9 @@ const ProfileNavigator = () => (
   >
     <Stack.Screen name="profile.main">
       {() => <ProfileStack />}
+    </Stack.Screen>
+    <Stack.Screen name="profile.preview">
+      {(props) => <PreviewStack {...props} />}
     </Stack.Screen>
     <Stack.Screen name="profile.settings">
       {() => <SettingsStack />}
