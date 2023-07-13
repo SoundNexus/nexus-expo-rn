@@ -11,6 +11,7 @@ import { PreviewStack } from './main/preview';
 import { ProfileStack } from './main/profile';
 import { CameraStack } from './main/camera';
 import { HeaderLogo } from '../components/header/header';
+import { CreateStack } from './main/create';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,6 +32,10 @@ const HomeNavigator = () => (
     <Stack.Screen name="home.preview"
     options={{headerShown: false}}>
       {(props) => <PreviewStack {...props} />}
+    </Stack.Screen>
+    <Stack.Screen name="home.create"
+    options={{headerShown: false}}>
+      {() => <CreateStack />}
     </Stack.Screen>
   </Stack.Navigator>
 )

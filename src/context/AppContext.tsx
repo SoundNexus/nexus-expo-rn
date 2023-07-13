@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 import {PayloadAction} from './utils';
 
 export interface AppContextState {
-  currentStack: 'home.main' | 'scanner' | 'claim' | 'profile.settings' | 'profile.main' | 'profile.preview' | 'home.preview';
+  currentStack: 'home.main' | 'scanner' | 'claim' | 'profile.settings' | 'profile.main' | 'profile.preview' | 'home.preview' | 'home.create';
   user?: Partial<any>;
   loading?: boolean;
 }
@@ -18,7 +18,7 @@ export interface AppContextType {
       PayloadAction<Partial<AppContextState>, AppContextAction>
     >,
   ) => void;
-  currentStack: 'home.main' | 'scanner' | 'claim' | 'profile.settings' | 'profile.main' | 'profile.preview' | 'home.preview',
+  currentStack: 'home.main' | 'scanner' | 'claim' | 'profile.settings' | 'profile.main' | 'profile.preview' | 'home.preview' | 'home.create',
   isAuthorized: boolean;
 }
 

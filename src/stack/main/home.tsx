@@ -44,33 +44,6 @@ export const HomeStack = () => {
 
   return (
     <SafeAreaView className="relative bg-white">
-      {/* <View className="flex flex-row self-start px-5 py-8">
-        <View className="w-[100px] h-[100px] rounded-full bg-[#F4F6FB] shadow">
-          <Image
-            source={require('../../assets/webmint-mascot.png')}
-            className="w-[100px] h-[100px]"
-          />
-        </View>
-        <View className="flex flex-col items-left justify-center gap-3 ml-5 content-center">
-          <Text className="text-[#757E9D]" >
-            { app?.user?.services[0]?.scoped?.email }
-          </Text>
-          <TouchableHighlight
-            // onPress={() => copyText(app?.user?.addr as string)}
-            activeOpacity={1}
-            underlayColor={'#DDDDDD'}
-            className="rounded-[4px] bg-[#F4F6FB]"
-          >
-            <View className="px-2 py-1 rounded-[4px] w-auto flex flex-row items-center gap-x-2">
-              <Text className="text-[#757E9D] text-xs">{ app?.user?.addr }</Text>
-              <Image
-                source={require('../../assets/copy.png')}
-                className="w-[14px] h-[14px]"
-              />
-            </View>
-          </TouchableHighlight>
-        </View>
-      </View> */}
       <View className="bg-[#E5E4E2] h-full py-5 px-8 content-center">
         <FlatList 
           data={data}

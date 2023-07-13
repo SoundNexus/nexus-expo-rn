@@ -44,7 +44,7 @@ export const ProfileStack = () => {
 
   return (
     <SafeAreaView className="relative bg-white">
-      <View className="flex flex-row self-start px-5 py-8">
+      <View className="flex flex-row self-start px-5 py-1">
         <View className="w-[100px] h-[100px] rounded-full bg-[#F4F6FB] shadow">
           <Image
             source={require('../../assets/webmint-mascot.png')}
