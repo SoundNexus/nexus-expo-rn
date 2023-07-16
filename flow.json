@@ -1,16 +1,21 @@
 {
-  "accounts": {
-    "testnet" : {
-      "address" : "0x71aa02495aaf6221",
-      "key": ""
-    }
-  },
-  "contracts": {
-    "KittyItems": "./flow/contracts/Nexus.cdc"
-  },
-  "deployments": {
-    "testnet": {
-      "my-testnet-account": ["NexusNFTContract"]
-    }
-  }
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"sandboxnet": "access.sandboxnet.nodes.onflow.org:9000",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+	"accounts": {
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": ""
+		},
+		"testnet-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": ""
+		}
+	},
+	"deployments": {
+		
+	}
 }
