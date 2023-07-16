@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Dimensions,
   Image,
@@ -17,6 +17,11 @@ import {
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { useAppContext } from '../../context/AppContext';
 import { useNavigation } from '@react-navigation/native';
+
+import "../../utils/flow/config";
+
+import * as fcl from "@onflow/fcl/dist/fcl-react-native";
+import getAccountNFt from '../../../flow/scripts/GetAccountNFT.cdc';
 
 const windowHeight = Dimensions.get('window').height;
 const statusBarHeight: number =
@@ -41,6 +46,25 @@ export const ProfileStack = () => {
     });
     navigation.navigate('profile.preview', item)
   }
+
+  const onNavigateToSettings = () => {
+    appDispatch({
+      type: 'app.update',
+      payload: { currentStack: 'profile.settings' },
+    });
+    navigation.navigate('profile.settings')
+  }
+
+  useEffect(() => {
+    fcl
+    .query({
+      cadence: getAccountNFt,
+    })
+    .then((res: any) => {
+      console.log("🚀 ~ file: profile.tsx:64 ~ .then ~ res:", res)
+      
+    });
+  },[])
 
   return (
     <SafeAreaView className="relative bg-white">
@@ -70,18 +94,26 @@ export const ProfileStack = () => {
             </View>
           </TouchableHighlight>
         </View>
+        <View className="w-[50px] h-[50px] rounded-full bg-[#F4F6FB] shadow justify-end">
+          <TouchableHighlight className='justify-end' onPress={() => onNavigateToSettings()}>
+            <Image
+              source={require('../../assets/settings.png')}
+              className="w-[30px] h-[30px]"
+            />
+          </TouchableHighlight>
+        </View>
       </View>
-      <View className="bg-[#E5E4E2] h-full py-5 px-8 content-center">
+      <View className="bg-[#E5E4E2] h-full py-5 px-4 content-center">
         <FlatList 
           data={data}
           refreshing={loading}
           keyExtractor={(_, index) => index.toString()}
           renderItem={( item ) => (
             <Pressable onPress={() => onNavigate(item) }>
-              <View className='flex flex-row justify-between my-8'>
-                <Image source={require('../../assets/sample-cover.png')} className='max-w-[390px] max-h-[390px] h-auto justify-center mx-auto' />
+              <View className='overflow-hidden rounded-[10px] border border-[#DDE0ED] mb-4'>
+                <Image source={require('../../assets/sample-cover.png')} className='max-w-[390px] h-auto justify-center mx-auto' />
               </View>
-              <View className='flex flex-row justify-between'>
+              <View className='flex flex-row justify-between mb-5'>
                 <View>
                   <Text className=' text-2xl font-bold text-black'>
                     {item.item.eventName}

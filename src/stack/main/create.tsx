@@ -21,13 +21,12 @@ import { useAppContext } from '../../context/AppContext';
 import { Input, InputMode } from '../../components/input/input';
 import PinataService from '../../api/pinata';
 
-const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
-const statusBarHeight: number =
-  Platform.OS === 'android'
-    ? StatusBar.currentHeight || 0
-    : getStatusBarHeight(true);
+import "../../utils/flow/config";
 
+import * as fcl from "@onflow/fcl/dist/fcl-react-native";
+
+import createEmptyCollection from '../../../flow/transactions/CreateCollection.cdc';
+import mintNft from '../../../flow/transactions/MintNft.cdc';
 
 interface SubmitProps {
   eventName: string;
@@ -92,6 +91,18 @@ export const CreateStack = () => {
     }
     console.log("🚀 ~ file: create.tsx:55 ~ onBuyTicket ~ submitItems:", submitItems)
     setLoading(true);
+    try {
+      fcl.mutate({
+        cadence: mintNft,
+        args: () => [],
+        limit: 999,
+      }).then((res: any) => {
+        console.log("🚀 ~ file: create.tsx:100 ~ onBuyTicket ~ res:", res)
+      });
+    } catch (error) {
+      console.log("🚀 ~ file: create.tsx:108 ~ onBuyTicket ~ error:", error)
+    }
+
   };
 
   return (
@@ -157,9 +168,9 @@ export const CreateStack = () => {
         </View>
       </ScrollView>
 
-      <View className="h-[56px] bg-white rounded-t-[16px] w-full relative flex flex-row justify-evenly items-center p-5 mb-10">
+      <View className="h-auto w-full relative p-5 mb-10">
         <TouchableHighlight
-          className="rounded-[8px] p-4 border border-[#DDE0ED] bg-white w-full"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
           onPress={() => onBuyTicket()}
           activeOpacity={1}
           disabled={loading}

@@ -21,7 +21,7 @@ export const HeaderLogo = () => {
     <View className='flex flex-row bg-white justify-between py-1 px-4'>
       <View className='flex justify-center'>
         <Image
-          source={require('../../assets/logo.png')}
+          source={require('../../assets/nexus.png')}
           className="w-[200px] h-auto justify-center mx-auto"
         />
       </View>

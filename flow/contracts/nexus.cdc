@@ -1,4 +1,5 @@
-import NonFungibleToken from 0x1d7e57aa55817448
+// import NonFungibleToken from 0x1d7e57aa55817448
+import NonFungibleToken from 0x631e88ae7f1d7c20
 
 pub contract NexusNFTContract: NonFungibleToken {
 
@@ -32,11 +33,11 @@ pub contract NexusNFTContract: NonFungibleToken {
     }
   }
 
-  pub resource interface FanfareNFTCollectionPublic {
+  pub resource interface NexusNFTCollectionPublic {
     pub fun deposit(token: @NonFungibleToken.NFT) 
     pub fun getIDs(): [UInt64]
     pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT
-    pub fun borrowNFTMetadata(id: UInt64): &FanfareNFTContract.NFT? {
+    pub fun borrowNFTMetadata(id: UInt64): &NexusNFTContract.NFT? {
       // If the result isn't nil, the id of the returned reference
       // should be the same as the argument to the function
       post {
@@ -46,7 +47,7 @@ pub contract NexusNFTContract: NonFungibleToken {
     }
   }
 
-  pub resource Collection: NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, FanfareNFTCollectionPublic {
+  pub resource Collection: NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, NexusNFTCollectionPublic {
       // dictionary of NFT conforming tokens
       // NFT is a resource type with an `UInt64` ID field
     pub var ownedNFTs: @{UInt64: NonFungibleToken.NFT}
@@ -67,7 +68,7 @@ pub contract NexusNFTContract: NonFungibleToken {
     // deposit takes a NFT and adds it to the collections dictionary
     // and adds the ID to the id array
     pub fun deposit(token: @NonFungibleToken.NFT) {
-      let token <- token as! @FanfareNFTContract.NFT
+      let token <- token as! @NexusNFTContract.NFT
 
       let id: UInt64 = token.id
 
@@ -92,10 +93,10 @@ pub contract NexusNFTContract: NonFungibleToken {
 
     // borrowNFTMetadata gets a reference to an NFT in the collection
     // so that the caller can read its id and metadata
-    pub fun borrowNFTMetadata(id: UInt64): &FanfareNFTContract.NFT? {
+    pub fun borrowNFTMetadata(id: UInt64): &NexusNFTContract.NFT? {
       if self.ownedNFTs[id] != nil {
         let ref = (&self.ownedNFTs[id] as auth &NonFungibleToken.NFT?)!
-        return ref as! &FanfareNFTContract.NFT
+        return ref as! &NexusNFTContract.NFT
       } else {
         return nil
       }
@@ -127,9 +128,9 @@ pub contract NexusNFTContract: NonFungibleToken {
       )
       let id: UInt64 = self.idCount
       self.idCount = self.idCount + 1
-      FanfareNFTContract.totalSupply = FanfareNFTContract.totalSupply + 1
+      NexusNFTContract.totalSupply = NexusNFTContract.totalSupply + 1
 
-      var receiver = getAccount(recipient).getCapability<&{FanfareNFTCollectionPublic}>(FanfareNFTContract.CollectionPublicPath)
+      var receiver = getAccount(recipient).getCapability<&{NexusNFTCollectionPublic}>(NexusNFTContract.CollectionPublicPath)
       let account = receiver.borrow()!
       account.deposit(token: <- token)
 
@@ -140,19 +141,19 @@ pub contract NexusNFTContract: NonFungibleToken {
   }
 
   init() {
-    self.CollectionStoragePath = /storage/FanfareNFTCollection
-    self.CollectionPublicPath = /public/FanfareNFTCollection
+    self.CollectionStoragePath = /storage/NexusNFTCollection
+    self.CollectionPublicPath = /public/NexusNFTCollection
 
-    self.ContentCreatorStoragePath = /storage/FanfareContentStorage
-    self.ContentCreatorPrivatePath = /private/FanfareContentStorage
-    self.ContentCreatorPublicPath = /public/FanfareContentStorage
+    self.ContentCreatorStoragePath = /storage/NexusContentStorage
+    self.ContentCreatorPrivatePath = /private/NexusContentStorage
+    self.ContentCreatorPublicPath = /public/NexusContentStorage
 
     // Initialize the total supply
     self.totalSupply = 0
 
     self.account.save(<-create ContentCreator(), to: self.ContentCreatorStoragePath)
     
-    self.account.link<&{FanfareNFTContract.FanfareNFTCollectionPublic}>(/public/FanfareNFTCollection, target: /storage/FanfareNFTCollection)
+    self.account.link<&{NexusNFTContract.NexusNFTCollectionPublic}>(/public/NexusNFTCollection, target: /storage/NexusNFTCollection)
 
     emit ContractInitialized()        
   }

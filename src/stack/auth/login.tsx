@@ -55,27 +55,22 @@ export const LoginStack = () => {
   }
 
   return (
-    <SafeAreaView className="bg-black">
+    <SafeAreaView className="bg-white">
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        className="bg-black h-full relative p-5"
+        className="bg-white h-full relative p-5"
       >
         <Image
           source={require('../../assets/logo.png')}
-          className="w-[250px] h-auto mt-60 justify-center mx-auto"
+          className="w-[250px] h-auto justify-center mx-auto"
         />
         <View
           style={{ height: windowHeight - (64 + statusBarHeight + 50) }}
-          className="flex flex-col pb-[54px] mt-10"
+          className="flex flex-col"
         >
           <View className="flex items-center">
             <Text
-              className="text-[36px] font-semibold mb-3 text-white"
-            >
-              Welcome
-            </Text>
-            <Text
-              className="text-[16px] mb-10 text-white"
+              className="text-[26px] mb-10 text-black"
             >
               Login to your account
             </Text>
@@ -83,18 +78,18 @@ export const LoginStack = () => {
 
 
           <TouchableHighlight
-            className="rounded-[8px] p-4 border border-[#DDE0ED] bg-white"
+            className="rounded-[8px] p-4 border border-blue  content-center align-middle"
             activeOpacity={1}
             underlayColor={'#DDDDDD'}
           >
-            <View className="flex flex-row items-center justify-center gap-4">
+            <View className="flex flex-row items-center justify-center content-center align-middle gap-4">
               {/* <Text
                 className="text-[16px] font-normal text-center text-[#1C2237]"
               >
                 Login via email
               </Text> */}
               {app.loading ? (
-                <View className="bg-white h-full relative p-5 flex items-center justify-center">
+                <View className="bg-blue-500 relative p-5 flex items-center justify-center">
                   <ActivityIndicator />
                   <Text className="mt-2">Please wait..</Text>
                 </View>
@@ -103,12 +98,6 @@ export const LoginStack = () => {
               )}
             </View>
           </TouchableHighlight>
-        </View>
-        <View className="absolute -top-5 -right-5">
-          {/* <Image
-            source={require('../../assets/background.png')}
-            className="w-[249px] h-[420px]"
-          /> */}
         </View>
       </ScrollView>
     </SafeAreaView>

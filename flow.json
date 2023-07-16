@@ -5,17 +5,30 @@
 		"sandboxnet": "access.sandboxnet.nodes.onflow.org:9000",
 		"testnet": "access.devnet.nodes.onflow.org:9000"
 	},
+	"contracts": {
+		"NexusNFTContract": "./flow/contracts/nexus.cdc"
+	},
 	"accounts": {
 		"emulator-account": {
 			"address": "f8d6e0586b0a20c7",
-			"key": ""
+			"key": "ec2ac8a619d63577f6fc457c46c443d6e8ad19e449ef269a63cfefdd78e9a03d"
 		},
-		"testnet-account": {
-			"address": "f8d6e0586b0a20c7",
-			"key": ""
+		"testnet-account" : {
+			"address": "0x57ed4b51ee8750f4",
+			"key": {
+				"type": "hex",
+				"index": 0,
+				"signatureAlgorithm": "ECDSA_secp256k1",
+				"hashAlgorithm": "SHA3_256",
+				"privateKey": "77dacf9a8916319b9ec68205e083df3d972c5bb2c01b46ea88aff826d05ed928"
+			}
 		}
 	},
 	"deployments": {
-		
+		"testnet": {
+			"testnet-account" :[
+				"NexusNFTContract"
+			]
+		}
 	}
 }

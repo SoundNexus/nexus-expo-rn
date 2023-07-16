@@ -28,7 +28,14 @@ const statusBarHeight: number =
 
 export const SettingsStack = () => {
   const [loading, setLoading] = useState(false);
-  const { value } = useAppContext();
+  const { dispatch: appDispatch } = useAppContext();
+
+  const onLogout = () => {
+    fcl.unauthenticate();
+    appDispatch({
+      type: 'app.reset',
+    });
+  }
 
   return (
     <SafeAreaView className="relative bg-black">
@@ -46,7 +53,7 @@ export const SettingsStack = () => {
             className="rounded-[8px] p-4 border border-[#DDE0ED] bg-white"
             activeOpacity={1}
             underlayColor={'#DDDDDD'}
-            onPress={fcl.unauthenticate}
+            onPress={onLogout}
           >
             <View className="flex flex-row items-center justify-center gap-4">
               <Text

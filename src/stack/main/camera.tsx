@@ -17,6 +17,7 @@ import { useAppContext } from '../../context/AppContext';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { useScanContext } from '../../context/ScanContext';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { useNavigation } from '@react-navigation/native';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -30,6 +31,8 @@ export const CameraStack = () => {
   const [scanning, setScanning] = useState(true);
   const [hasPermission, setHasPermission] = useState(false);
   const [scanned, setScanned] = useState(false);
+  const { dispatch: appDispatch } = useAppContext();
+  const navigation = useNavigation();
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -40,16 +43,19 @@ export const CameraStack = () => {
 
     getBarCodeScannerPermissions();
   }, []);
-  
-  const { dispatch: appDispatch } = useAppContext();
-  const { dispatch: scanDispatch } = useScanContext();
 
   
   const handleBarCodeScanned = ({ type, data }: any) => {
     try {
       console.log("🚀 ~ file: camera.tsx:48 ~ handleBarCodeScanned ~ data:", data)
       console.log("🚀 ~ file: camera.tsx:48 ~ handleBarCodeScanned ~ type:", type)
-      
+
+      appDispatch({
+        type: 'app.update',
+        payload: { currentStack: 'scanner.result' },
+      });
+
+      navigation.navigate('scanner.result')
       setScanned(true);
     } catch (error) {
       
@@ -72,7 +78,6 @@ export const CameraStack = () => {
         barCodeTypes={BarCodeScanner.Constants.BarCodeType.qr}
         style={StyleSheet.absoluteFillObject}
       />
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
       <View
         className="absolute top-10 left-0 items-center flex-row w-full justify-between px-5"
         style={{ elevation: 10 }}
@@ -113,9 +118,9 @@ export const CameraStack = () => {
           <Text
             className="text-white text-[16px]"
           >
-            {scanning
+            {!scanned
               ? 'Scanning QR Code...'
-              : 'QR Code Scanned! Please wait...'}
+              : <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
           </Text>
         </View>
       </View>

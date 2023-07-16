@@ -16,6 +16,7 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import cx from 'classnames';
 import { useScanContext } from '../../context/ScanContext';
 import { useAppContext } from '../../context/AppContext';
+import QRCode from 'react-native-qrcode-svg';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -117,11 +118,19 @@ export const PreviewStack = ({ route }: Props) => {
           <Text className="text-[#757E9D] mb-6 text-sm">
             {item?.minted + '/' + item?.totalSupply}
           </Text>
+          {app.currentStack === 'profile.preview' && (
+            <View className="overflow-hidden rounded-[10px] border border-[#DDE0ED] max-w-[390px] max-h-[390px] h-auto justify-center mx-auto">
+              <QRCode 
+                value='https://www.google.com'
+                size={300}
+              />
+            </View>
+          )}
         </View>
       </ScrollView>
 
-      <View className="h-[96px] bg-white rounded-t-[16px] w-full relative flex flex-row justify-evenly items-center p-5">
-        {app.currentStack === 'home.preview' ? (
+      {app.currentStack === 'home.preview' && (
+        <View className="h-[96px] bg-white rounded-t-[16px] w-full relative flex flex-row justify-evenly items-center p-5">
           <>
             <TouchableHighlight
               className={cx('flex mx-auto rounded-[8px]', {
@@ -154,25 +163,8 @@ export const PreviewStack = ({ route }: Props) => {
 
             <View className="absolute bg-white w-full bottom-[-10px] h-[10px]"></View>
           </>
-        ) : (
-          <>
-            <TouchableHighlight
-              className={cx('flex mx-auto rounded-[8px]', {
-                'bg-[#DFDFDF]': loading,
-              })}
-              onPress={() => onGenerateQR()}
-              activeOpacity={1}
-              disabled={loading}
-              underlayColor={'#eaeaea'}
-            >
-              <View className="rounded-[8px] overflow-hidden relative h-[56px] flex flex-row items-center justify-center">
-                <Text className="text-[16px] text-[#1c2237] mr-3">Generate QR</Text>
-                {loading && ( <ActivityIndicator /> )}
-              </View>
-            </TouchableHighlight>
-          </>
-        )}
-      </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 import { LoginStack } from './auth/login';
 import { HomeStack } from './main/home';
 import { useAppContext } from '../context/AppContext';
@@ -12,6 +13,7 @@ import { ProfileStack } from './main/profile';
 import { CameraStack } from './main/camera';
 import { HeaderLogo } from '../components/header/header';
 import { CreateStack } from './main/create';
+import { ScanResultStack } from './main/scan-result';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -36,6 +38,23 @@ const HomeNavigator = () => (
     <Stack.Screen name="home.create"
     options={{headerShown: false}}>
       {() => <CreateStack />}
+    </Stack.Screen>
+  </Stack.Navigator>
+)
+
+const ScannerNavigator = () => (
+  <Stack.Navigator 
+    initialRouteName='scanner.main'
+    screenOptions={{ headerShown: true }}
+  >
+    <Stack.Screen 
+      name="scanner.main" 
+      options={{headerShown: false}}>
+      {() => <CameraStack />}
+    </Stack.Screen>
+    <Stack.Screen name="scanner.result"
+    options={{headerShown: false}}>
+      {() => <ScanResultStack />}
     </Stack.Screen>
   </Stack.Navigator>
 )
@@ -82,14 +101,32 @@ export const MainStack = () => {
       <Tab.Screen 
         name='home'
         component={HomeNavigator}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" color={color} size={size} />
+          )
+        }}
       />
       <Tab.Screen 
         name='scanner'
-        component={CameraStack}
+        component={ScannerNavigator}
+        options={{
+          tabBarLabel: 'Scan',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="ios-scan" color={color} size={size} />
+          )
+        }}
       />
       <Tab.Screen 
         name='profile' 
         component={ProfileNavigator} 
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" color={color} size={size} />
+          )
+        }}
       />
     </Tab.Navigator>
   );
