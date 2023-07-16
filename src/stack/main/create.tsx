@@ -11,12 +11,15 @@ import {
   Platform,
   StatusBar,
   ActivityIndicator,
+  Button,
 } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import cx from 'classnames';
+import * as ImagePicker from 'expo-image-picker';
+
 import { useScanContext } from '../../context/ScanContext';
 import { useAppContext } from '../../context/AppContext';
-import { Input } from '../../components/input/input';
+import { Input, InputMode } from '../../components/input/input';
+import PinataService from '../../api/pinata';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -26,17 +29,68 @@ const statusBarHeight: number =
     : getStatusBarHeight(true);
 
 
+interface SubmitProps {
+  eventName: string;
+  ticketName: string;
+  description: string;
+  image?: string;
+}
 export const CreateStack = () => {
   const [loading, setLoading] = useState(false);
+  const [uploadLoading, setUploadLoading] = useState(false);
+  const [eventName, setEventName] = useState('');
+  const [ticketName, setTicketName] = useState('');
+  const [eventDesc, setEventDesc] = useState('');
+  const [quantity, setQuantity] = useState('');
+  console.log("🚀 ~ file: create.tsx:45 ~ CreateStack ~ quantity:", quantity)
   const navigation = useNavigation();
   const { value: app } = useAppContext();
   const { value: scan } = useScanContext();
+
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    setUploadLoading(true)
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+
+    try {
+      const { response } = await PinataService.uploadImageToIPFS(result?.assets[0]?.uri);
+      console.log("🚀 ~ file: create.tsx:69 ~ pickImage ~ result?.assets[0]:", result?.assets[0])
+      console.log("🚀 ~ file: create.tsx:68 ~ pickImage ~ response:", response)
+      
+    } catch (error: any) {
+      console.log("🚀 ~ file: create.tsx:72 ~ pickImage ~ error:", error)
+      
+    } finally {
+      setUploadLoading
+    }
+
+    
+  };
 
   const onBack = () => {
     navigation.goBack();
   };
 
   const onBuyTicket = async () => {
+    const submitItems: SubmitProps = {
+      eventName,
+      ticketName,
+      description: eventDesc,
+    }
+    console.log("🚀 ~ file: create.tsx:55 ~ onBuyTicket ~ submitItems:", submitItems)
     setLoading(true);
   };
 
@@ -64,22 +118,55 @@ export const CreateStack = () => {
         className="bg-white px-5 pt-4 pb-10 h-full"
       >
         <View className="pb-10">
-          <Input />
+          <Input 
+            label='Event Name' 
+            placeholder='G event' 
+            onTextChange={setEventName} 
+            inputMode={InputMode.Text}
+            value={eventName} />
+        </View>
+        <View className="pb-10">
+          <Input 
+            label='Ticket Name' 
+            placeholder='G event' 
+            onTextChange={setTicketName} 
+            inputMode={InputMode.Text}
+            value={ticketName} />
+        </View>
+        <View className="pb-10">
+          <Input 
+            label='Description' 
+            placeholder='An event description' 
+            onTextChange={setEventDesc} 
+            textarea={true} 
+            inputMode={InputMode.Text}
+            value={eventDesc} />
+        </View>
+        <View className="pb-10">
+          <Input 
+            label='Quantity' 
+            placeholder='500' 
+            onTextChange={setQuantity} 
+            textarea={true} 
+            inputMode={InputMode.Number}
+            value={quantity} />
+        </View>
+        <View className="pb-10">
+          <Button title="Pick an image from camera roll" onPress={pickImage} />
+          {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
         </View>
       </ScrollView>
 
-      <View className="h-[96px] bg-white rounded-t-[16px] w-full relative flex flex-row justify-evenly items-center p-5">
+      <View className="h-[56px] bg-white rounded-t-[16px] w-full relative flex flex-row justify-evenly items-center p-5 mb-10">
         <TouchableHighlight
-          className={cx('flex mx-auto rounded-[8px]', {
-            'bg-[#DFDFDF]': loading,
-          })}
+          className="rounded-[8px] p-4 border border-[#DDE0ED] bg-white w-full"
           onPress={() => onBuyTicket()}
           activeOpacity={1}
           disabled={loading}
           underlayColor={'#eaeaea'}
         >
           <View className="rounded-[8px] overflow-hidden relative h-[56px] flex flex-row items-center justify-center">
-            <Text className="text-[16px] text-[#1c2237] mr-3">Buy Ticket</Text>
+            <Text className="text-[16px] text-[#1c2237] mr-3">Create Ticket</Text>
             {loading && ( <ActivityIndicator /> )}
           </View>
         </TouchableHighlight>

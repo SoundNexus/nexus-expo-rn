@@ -18,7 +18,7 @@ export const HeaderLogo = () => {
   };
 
   return (
-    <View className='flex flex-row bg-white justify-between py-1 px-8'>
+    <View className='flex flex-row bg-white justify-between py-1 px-4'>
       <View className='flex justify-center'>
         <Image
           source={require('../../assets/logo.png')}

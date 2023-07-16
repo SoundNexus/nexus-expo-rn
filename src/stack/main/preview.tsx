@@ -72,7 +72,7 @@ export const PreviewStack = ({ route }: Props) => {
         className="bg-white px-5 pt-4 pb-10 h-full"
       >
         <View className="pb-10">
-          <View className="overflow-hidden rounded-[24px] border border-[#DDE0ED]">
+          <View className="overflow-hidden rounded-[10px] border border-[#DDE0ED]">
             <Image
               source={require('../../assets/sample-cover.png')}
               className='max-w-[390px] max-h-[390px] h-auto justify-center mx-auto'

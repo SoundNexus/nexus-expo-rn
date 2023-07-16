@@ -1,0 +1,16 @@
+{
+  "accounts": {
+    "testnet" : {
+      "address" : "0x71aa02495aaf6221",
+      "key": ""
+    }
+  },
+  "contracts": {
+    "KittyItems": "./flow/contracts/Nexus.cdc"
+  },
+  "deployments": {
+    "testnet": {
+      "my-testnet-account": ["NexusNFTContract"]
+    }
+  }
+}
