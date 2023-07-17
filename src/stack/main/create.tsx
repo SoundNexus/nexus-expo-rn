@@ -33,10 +33,10 @@ interface SubmitProps {
 export const CreateStack = () => {
   const [loading, setLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
-  const [eventName, setEventName] = useState('');
-  const [ticketName, setTicketName] = useState('');
-  const [eventDesc, setEventDesc] = useState('');
-  const [quantity, setQuantity] = useState('');
+  const [eventName, setEventName] = useState('Live Aid Concert');
+  const [ticketName, setTicketName] = useState('Gen Ad');
+  const [eventDesc, setEventDesc] = useState('Charity concert for AIDS victims');
+  const [quantity, setQuantity] = useState('1000');
   const [message, setMessage] = useState('');
   console.log("🚀 ~ file: create.tsx:45 ~ CreateStack ~ quantity:", quantity)
   const navigation = useNavigation();
