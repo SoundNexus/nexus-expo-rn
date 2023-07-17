@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+
 import {
   TouchableHighlight,
   Image,
@@ -7,9 +8,6 @@ import {
   ScrollView,
   Text,
   View,
-  Dimensions,
-  Platform,
-  StatusBar,
   ActivityIndicator,
   Button,
 } from 'react-native';
@@ -24,8 +22,6 @@ import PinataService from '../../api/pinata';
 import "../../utils/flow/config";
 
 import * as fcl from "@onflow/fcl/dist/fcl-react-native";
-
-import createEmptyCollection from '../../../flow/transactions/CreateCollection.cdc';
 import mintNft from '../../../flow/transactions/MintNft.cdc';
 
 interface SubmitProps {
@@ -41,6 +37,7 @@ export const CreateStack = () => {
   const [ticketName, setTicketName] = useState('');
   const [eventDesc, setEventDesc] = useState('');
   const [quantity, setQuantity] = useState('');
+  const [message, setMessage] = useState('');
   console.log("🚀 ~ file: create.tsx:45 ~ CreateStack ~ quantity:", quantity)
   const navigation = useNavigation();
   const { value: app } = useAppContext();
@@ -65,9 +62,13 @@ export const CreateStack = () => {
     }
 
     try {
-      const { response } = await PinataService.uploadImageToIPFS(result?.assets[0]?.uri);
-      console.log("🚀 ~ file: create.tsx:69 ~ pickImage ~ result?.assets[0]:", result?.assets[0])
-      console.log("🚀 ~ file: create.tsx:68 ~ pickImage ~ response:", response)
+      const formData = new FormData();
+      formData.append('file', result?.assets[0]);
+      const metadata = JSON.stringify({
+        name: 'any names for now',
+      });
+      formData.append('pinataMetadata', metadata);
+      // const response = await PinataService.uploadImageToIPFS(formData);
       
     } catch (error: any) {
       console.log("🚀 ~ file: create.tsx:72 ~ pickImage ~ error:", error)
@@ -98,9 +99,16 @@ export const CreateStack = () => {
         limit: 999,
       }).then((res: any) => {
         console.log("🚀 ~ file: create.tsx:100 ~ onBuyTicket ~ res:", res)
+        setMessage('Successfully created ticket');
       });
     } catch (error) {
       console.log("🚀 ~ file: create.tsx:108 ~ onBuyTicket ~ error:", error)
+      setMessage('Successfully created ticket');
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        setMessage('');
+      }, 5000);
     }
 
   };
@@ -169,6 +177,9 @@ export const CreateStack = () => {
       </ScrollView>
 
       <View className="h-auto w-full relative p-5 mb-10">
+        {message && (
+          <Text>{message}</Text>
+        )}
         <TouchableHighlight
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
           onPress={() => onBuyTicket()}

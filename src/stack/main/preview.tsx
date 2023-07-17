@@ -32,6 +32,7 @@ interface Props {
 export const PreviewStack = ({ route }: Props) => {
   const [loading, setLoading] = useState(false);
   const {item } = route.params;
+  console.log("🚀 ~ file: preview.tsx:35 ~ PreviewStack ~ item:", item)
   const navigation = useNavigation();
   const { value: app } = useAppContext();
   const { value: scan } = useScanContext();

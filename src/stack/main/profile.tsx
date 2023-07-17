@@ -56,15 +56,42 @@ export const ProfileStack = () => {
   }
 
   useEffect(() => {
-    fcl
-    .query({
-      cadence: getAccountNFt,
-    })
-    .then((res: any) => {
-      console.log("🚀 ~ file: profile.tsx:64 ~ .then ~ res:", res)
+    getNFTs();
+    getProfile();
+
+  },[]);
+
+  const getNFTs = async() => {
+    try {
+      const nfts = await fcl
+      .query({
+        cadence: getAccountNFt,
+      })
+      console.log("🚀 ~ file: profile.tsx:69 ~ getNFTs ~ nfts:", nfts)
+    } catch (error) {
+      console.log("🚀 ~ file: profile.tsx:72 ~ getProfile ~ error:", error)
+    }
+  }
+
+  const getProfile = async() => {
+    try {
+      const profile = await fcl
+      .query({
+        cadence: `
+          import Profile from ${app.user?.addr}
+
+          pub fun main(address: Address): Profile.ReadOnly? {
+            return Profile.read(address)
+          }
+        `,
+        args: (args: any, t: any) => [args(app.user?.addr, t.Address)],
+      })
+      console.log("🚀 ~ file: profile.tsx:87 ~ getProfile ~ profile:", profile)
+    } catch (error) {
+      console.log("🚀 ~ file: profile.tsx:91 ~ getProfile ~ error:", error)
       
-    });
-  },[])
+    }
+  }
 
   return (
     <SafeAreaView className="relative bg-white">
@@ -105,7 +132,7 @@ export const ProfileStack = () => {
       </View>
       <View className="bg-[#E5E4E2] h-full py-5 px-4 content-center">
         <FlatList 
-          data={data}
+          data={app?.events}
           refreshing={loading}
           keyExtractor={(_, index) => index.toString()}
           renderItem={( item ) => (

@@ -2,11 +2,13 @@ import React, { useMemo } from 'react';
 import {createContext, useContext, useReducer} from 'react';
 import update from 'immutability-helper';
 import {PayloadAction} from './utils';
+import { Event, sampleEvents } from '../constants/constants';
 
 export interface AppContextState {
   currentStack: 'home.main' | 'scanner.main' | 'scanner.result' | 'claim' | 'profile.settings' | 'profile.main' | 'profile.preview' | 'home.preview' | 'home.create';
   user?: Partial<any>;
   loading?: boolean;
+  events?: Event[]
 }
 
 export type AppContextAction = 'app.update' | 'app.reset';
@@ -38,6 +40,13 @@ const reducer = (
     case 'app.update':
       if (payload.payload) {
         console.log("🚀 ~ file: AppContext.tsx:38 ~ payload.payload:", payload.payload)
+        return update(state, {
+          $merge: payload.payload,
+        });
+      }
+      return;
+    case 'app.update':
+      if (payload.payload) {
         return update(state, {
           $merge: payload.payload,
         });
