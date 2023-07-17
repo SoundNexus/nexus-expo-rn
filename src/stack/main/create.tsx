@@ -188,7 +188,7 @@ export const CreateStack = () => {
           underlayColor={'#eaeaea'}
         >
           <View className="rounded-[8px] overflow-hidden relative h-[56px] flex flex-row items-center justify-center">
-            <Text className="text-[16px] text-[#1c2237] mr-3">Create Ticket</Text>
+            <Text className="text-[16px] text-white mr-3">Create Ticket</Text>
             {loading && ( <ActivityIndicator /> )}
           </View>
         </TouchableHighlight>

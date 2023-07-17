@@ -78,7 +78,7 @@ export const ProfileStack = () => {
       const profile = await fcl
       .query({
         cadence: `
-          import Profile from ${app.user?.addr}
+          import Profile from 0x57ed4b51ee8750f4
 
           pub fun main(address: Address): Profile.ReadOnly? {
             return Profile.read(address)
@@ -98,8 +98,8 @@ export const ProfileStack = () => {
       <View className="flex flex-row self-start px-5 py-1">
         <View className="w-[100px] h-[100px] rounded-full bg-[#F4F6FB] shadow">
           <Image
-            source={require('../../assets/webmint-mascot.png')}
-            className="w-[100px] h-[100px]"
+            source={require('../../assets/profile.jpg')}
+            className="w-[100px] h-[100px] rounded-full"
           />
         </View>
         <View className="flex flex-col items-left justify-center gap-3 ml-5 content-center">

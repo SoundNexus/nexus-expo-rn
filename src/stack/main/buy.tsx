@@ -18,38 +18,16 @@ import { useScanContext } from '../../context/ScanContext';
 import { useAppContext } from '../../context/AppContext';
 import QRCode from 'react-native-qrcode-svg';
 
-const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
-const statusBarHeight: number =
-  Platform.OS === 'android'
-    ? StatusBar.currentHeight || 0
-    : getStatusBarHeight(true);
-
-interface Props {
-  route: any;
-}
-
-export const PreviewStack = ({ route }: Props) => {
+export const BuyStack = () => {
   const [loading, setLoading] = useState(false);
-  const {item } = route.params;
-  console.log("🚀 ~ file: preview.tsx:35 ~ PreviewStack ~ item:", item)
   const navigation = useNavigation();
-  const { value: app, dispatch: appDispatch } = useAppContext();
+  const { value: app } = useAppContext();
 
   const onBack = () => {
     navigation.goBack();
   };
 
   const onBuyTicket = async () => {
-    appDispatch({
-      type: 'app.update',
-      payload: { currentStack: 'home.buy' },
-    });
-    navigation.navigate('home.buy', item)
-  };
-
-  const onGenerateQR = async () => {
-    console.log('Generating QR code')
     setLoading(true);
   };
 
@@ -68,7 +46,7 @@ export const PreviewStack = ({ route }: Props) => {
           />
         </TouchableHighlight>
         <Text className="text-[20px]">
-          Preview
+          Buy Ticket
         </Text>
         <View className="w-10" />
       </View>
@@ -76,64 +54,40 @@ export const PreviewStack = ({ route }: Props) => {
         contentInsetAdjustmentBehavior="automatic"
         className="bg-white px-5 pt-4 pb-10 h-full"
       >
-        <View className="pb-10">
-          <View className="overflow-hidden rounded-[10px] border border-[#DDE0ED]">
+        <View className="pb-10 content-center items-center">
+          <View className="w-[150px] h-[150px] rounded-full bg-[#F4F6FB] shadow">
             <Image
-              source={require('../../assets/sample-cover2.jpg')}
-              className='max-w-[390px] max-h-[450px] h-[450px] justify-center mx-auto'
+              source={require('../../assets/profile.jpg')}
+              className="w-[150px] h-[150px] rounded-full"
             />
           </View>
           <View className="mt-4 mb-6">
-            {!!item?.creatorName && (
-              <View className="flex-row items-center justify-center">
-                <Text
-                  className="text-[14px] text-[#757E9D]"
-                  
-                >
-                  {item?.creatorName}
-                </Text>
-                <Image
-                  source={require('../../assets/verified.png')}
-                  className="w-4 h-4 ml-1"
-                />
-              </View>
-            )}
-            <Text
-              className="text-[24px] mx-auto font-medium"
+            <View className="flex-row items-center justify-center">
+              <Text
+                className="text-[14px] text-[#757E9D]"
+                
               >
-              {item?.eventName}
-            </Text>
-          </View>
-          <Text className="mb-2 tracking-[2px] text-[#1C2237] text-sm font-medium">
-            DESCRIPTION
-          </Text>
-          <Text className="text-[#757E9D] mb-6 text-sm">
-            {item?.description}
-          </Text>
-          <Text className="mb-2 tracking-[2px] text-[#1C2237] text-sm font-medium">
-            PRICE
-          </Text>
-          <Text className="text-[#757E9D] mb-6 text-sm">
-            {item?.price}
-          </Text>
-          <Text className="mb-2 tracking-[2px] text-[#1C2237] text-sm font-medium">
-            QUANTITY
-          </Text>
-          <Text className="text-[#757E9D] mb-6 text-sm">
-            {item?.minted + '/' + item?.totalSupply}
-          </Text>
-          {app.currentStack === 'profile.preview' && (
-            <View className="overflow-hidden rounded-[10px] border border-[#DDE0ED] max-w-[390px] max-h-[390px] h-auto justify-center mx-auto">
-              <QRCode 
-                value='https://www.google.com'
-                size={300}
+                {app?.user?.services[0]?.scoped?.email}
+              </Text>
+              <Image
+                source={require('../../assets/verified.png')}
+                className="w-4 h-4 ml-1"
               />
             </View>
-          )}
+          </View>
+          <Text className="mb-2 tracking-[2px] text-[#1C2237] text-sm font-medium">
+            FLOW
+          </Text>
+          <Text className="text-[#757E9D] mb-6 text-sm">
+            {'999.673662'}
+          </Text>
+          <Text className="mb-2 tracking-[2px] text-[#1C2237] text-sm font-medium">
+            FUSD
+          </Text>
+          <Text className="text-[#757E9D] mb-6 text-sm">
+            {'0'}
+          </Text>
         </View>
-      </ScrollView>
-
-      {app.currentStack === 'home.preview' && (
         <View className="h-[96px] bg-white rounded-t-[16px] w-full relative flex flex-row justify-evenly items-center p-5">
           <>
             <TouchableHighlight
@@ -146,7 +100,7 @@ export const PreviewStack = ({ route }: Props) => {
               underlayColor={'#eaeaea'}
             >
               <View className="rounded-[8px] overflow-hidden relative h-[56px] flex flex-row items-center justify-center px-10">
-                <Text className="text-[16px] text-white mr-3">Follow</Text>
+                <Text className="text-[16px] text-white mr-3">Use Wallet</Text>
                 {loading && ( <ActivityIndicator /> )}
               </View>
             </TouchableHighlight>
@@ -159,8 +113,8 @@ export const PreviewStack = ({ route }: Props) => {
               disabled={loading}
               underlayColor={'#eaeaea'}
             >
-              <View className="rounded-[8px] overflow-hidden relative h-[56px] flex flex-row items-center justify-center px-10">
-                <Text className="text-[16px] text-white">Buy Ticket</Text>
+              <View className="rounded-[8px] overflow-hidden relative h-[56px] flex flex-row items-center justify-center px-6">
+                <Text className="text-[16px] text-white">Use Credit Card</Text>
                 {loading && ( <ActivityIndicator /> )}
               </View>
             </TouchableHighlight>
@@ -168,7 +122,7 @@ export const PreviewStack = ({ route }: Props) => {
             <View className="absolute bg-white w-full bottom-[-10px] h-[10px]"></View>
           </>
         </View>
-      )}
+      </ScrollView>
     </SafeAreaView>
   );
 };

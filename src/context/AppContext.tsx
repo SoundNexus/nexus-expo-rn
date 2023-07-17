@@ -5,7 +5,7 @@ import {PayloadAction} from './utils';
 import { Event, sampleEvents } from '../constants/constants';
 
 export interface AppContextState {
-  currentStack: 'home.main' | 'scanner.main' | 'scanner.result' | 'claim' | 'profile.settings' | 'profile.main' | 'profile.preview' | 'home.preview' | 'home.create';
+  currentStack: 'home.main' | 'scanner.main' | 'scanner.result' | 'claim' | 'profile.settings' | 'profile.main' | 'profile.preview' | 'home.preview' | 'home.create' | 'home.buy';
   user?: Partial<any>;
   loading?: boolean;
   events?: Event[]
@@ -20,7 +20,7 @@ export interface AppContextType {
       PayloadAction<Partial<AppContextState>, AppContextAction>
     >,
   ) => void;
-  currentStack: 'home.main' | 'scanner.main' | 'scanner.result' | 'claim' | 'profile.settings' | 'profile.main' | 'profile.preview' | 'home.preview' | 'home.create',
+  currentStack: 'home.main' | 'scanner.main' | 'scanner.result' | 'claim' | 'profile.settings' | 'profile.main' | 'profile.preview' | 'home.preview' | 'home.create' | 'home.buy',
   isAuthorized: boolean;
 }
 
